@@ -20,7 +20,7 @@ class ThreadController extends Controller
      */
     public function index()
     {
-        $threads = Thread::withCount('replies')
+        $threads = Thread::withCount(['replies', 'upVotes'])
                             ->with(['user.avatar', 'attachment'])
                             ->whereNull('parent_id')
                             ->latest()
@@ -57,8 +57,11 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
-        $thread->loadMissing(['user.avatar', 'replies.user', 'replies.attachment']);
-        $thread->loadCount('replies');
+        $thread->loadMissing(['user.avatar', 'replies.attachment', 'attachment']);
+        $thread->loadCount(['replies', 'upVotes', 'downVotes', 'replies']);
+        $thread->load(['replies' => function($query){
+            $query->with('user')->withCount(['upVotes', 'downVotes']);
+        }]);
         return new JsonResource($thread);
     }
 

@@ -12,6 +12,7 @@ class Thread extends Model
     protected $fillable = [
         'content',
         'user_id',
+        'product_id',
     ];
 
     public function user()
@@ -26,12 +27,12 @@ class Thread extends Model
 
     public function upVotes()
     {
-        return $this->hasMany(Vote::class)->where('vote', 1);
+        return $this->hasMany(Vote::class)->where('value', 1);
     }
 
     public function downVotes()
     {
-        return $this->hasMany(Vote::class)->where('vote', -1);
+        return $this->hasMany(Vote::class)->where('value', -1);
     }
 
     public function replies()

@@ -20,7 +20,7 @@ class ReplyController extends Controller
      */
     public function index(Thread $thread)
     {
-        $replies = $thread->replies()->with(['attachment', 'user.avatar'])->paginate();
+        $replies = $thread->replies()->with(['attachment', 'user.avatar'])->withCount(['upVotes', 'downVotes'])->paginate();
         return JsonResource::collection($replies);
     }
 
@@ -32,9 +32,10 @@ class ReplyController extends Controller
         $validated = $request->validate([
             'content' => 'required',
             'attachment' => 'nullable|exists:fileables,id',
+            'product_id' => 'nullable|string',
         ]);
 
-        $thread = $request->user()->replyThread($thread, $request->only('content'));
+        $thread = $request->user()->replyThread($thread, $request->only(['content', 'product_id']));
 
         if(isset($validated['attachment'])){
             $fileable = Fileable::whereNull('fileable_type')->find($validated['attachment']);
