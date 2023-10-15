@@ -86,7 +86,7 @@ class User extends Authenticatable
             $thread->votes()->updateOrCreate([
                 'user_id' => $this->id,
             ], [
-                'vote' => $type === 'up' ? 1 : -1,
+                'value' => $type === 'up' ? 1 : -1,
             ]);
         }
 

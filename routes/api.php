@@ -26,4 +26,5 @@ Route::post('auth/profile', [\App\Http\Controllers\AuthController::class, 'profi
 Route::resource('threads', \App\Http\Controllers\ThreadController::class);
 Route::resource('threads.replies', \App\Http\Controllers\Thread\ReplyController::class);
 Route::resource('threads.votes', \App\Http\Controllers\Thread\VoteController::class);
+Route::resource('products', \App\Http\Controllers\ProductController::class);
 Route::post('upload', [\App\Http\Controllers\FileableController::class, 'store']);
